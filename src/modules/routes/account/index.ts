@@ -1,11 +1,14 @@
 import { FastifyPluginAsync, FastifyRequest } from "fastify";
+import { GetAccountBalanceService } from "../../../domains/services/get-account-balance.service";
+import { LoadAccountAdapter } from "../../account-persistence/adapters/load-account.adapter";
+import { models } from "mongoose";
 
 type GetBalanceRequest = FastifyRequest<{
   Querystring: { accountId: string }
 }>
 
 const getAccountBalance: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
-  
+
   fastify.get('/balance', {
     schema: {
       querystring: {
@@ -15,15 +18,17 @@ const getAccountBalance: FastifyPluginAsync = async (fastify, opts): Promise<voi
         200: {
           type: 'object',
           properties: {
-            _id: { type: 'string' },
-            userId: { type: 'string' }
+            _amount: { type: 'string' },
           }
         }
       }
     }
   }, async function (req: GetBalanceRequest, reply) {
-    const accounts = this.mongo.db?.collection('accounts')
-    return await accounts?.findOne({ userId: req.query.accountId })
+    const loadAccountAdapter = new LoadAccountAdapter(models.Account, models.Activity);
+    const getAccountBalanceQuery = new GetAccountBalanceService(loadAccountAdapter);
+  
+    const result = await getAccountBalanceQuery.getAccountBalance(req.query.accountId);
+    return result;
   })
 }
 

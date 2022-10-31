@@ -19,12 +19,12 @@
   "license": "ISC",
   "dependencies": {
     "@fastify/autoload": "^5.0.0",
-    "@fastify/mongodb": "^6.1.0",
     "@fastify/sensible": "^5.0.0",
     "bignumber.js": "^9.1.0",
     "fastify": "^4.0.0",
     "fastify-cli": "^5.5.1",
-    "fastify-plugin": "^4.0.0"
+    "fastify-plugin": "^4.0.0",
+    "mongoose": "^6.7.0"
   },
   "devDependencies": {
     "@types/jest": "^29.2.0",
