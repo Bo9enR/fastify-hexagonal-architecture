@@ -1,11 +1,7 @@
 import { FastifyPluginAsync, FastifyRequest } from "fastify";
-import { GetAccountBalanceService } from "../../../domains/services/get-account-balance.service";
-import { LoadAccountAdapter } from "../../account-persistence/adapters/load-account.adapter";
-import { models } from "mongoose";
 import { SendMoneyCommand } from "../../../domains/ports/in/send-money.command";
 import { MoneyEntity } from "../../../domains/entities/money.entity";
-import { SendMoneyService } from "../../../domains/services/send-money.service";
-import { UpdateAccountActivitiesAdapter } from "../../account-persistence/adapters/update-account-activities.adapter";
+import { container, TOKENS } from "../../tokens";
 
 type GetBalanceRequest = FastifyRequest<{
   Querystring: { accountId: string }
@@ -36,9 +32,7 @@ const account: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       }
     }
   }, async function (req: GetBalanceRequest, reply) {
-    const loadAccountAdapter = new LoadAccountAdapter(models.Account, models.Activity);
-    const getAccountBalanceQuery = new GetAccountBalanceService(loadAccountAdapter);
-  
+    const getAccountBalanceQuery = container.get(TOKENS.getAccountBalanceQuery);
     const result = await getAccountBalanceQuery.getAccountBalance(req.query.accountId);
     return result;
   });
@@ -63,9 +57,7 @@ const account: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
       MoneyEntity.of(req.query.amount)
     );
 
-    const loadAccountAdapter = new LoadAccountAdapter(models.Account, models.Activity);
-    const updateAccountActivitiesAdapter = new UpdateAccountActivitiesAdapter(models.Activity);
-    const sendMoneyUseCase = new SendMoneyService(loadAccountAdapter, updateAccountActivitiesAdapter);
+    const sendMoneyUseCase = container.get(TOKENS.sendMoneyUseCase);
 
     const result = await sendMoneyUseCase.sendMoney(command);
     return result;
