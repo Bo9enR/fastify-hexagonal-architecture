@@ -1,10 +1,13 @@
-# Getting Started with [Fastify-CLI](https://www.npmjs.com/package/fastify-cli)
-This project was bootstrapped with Fastify-CLI.
+## Description
 
-## Available Scripts
+[fastify](https://github.com/fastify/fastify) Hexagonal Architecture Example
 
-In the project directory, you can run:
+Same domain code as in [nest-hexagonal-architecture](https://github.com/Bo9enR/nest-hexagonal-architecture) example
 
+## Installation
+### `npm install`
+
+## Running the app
 ### `npm run dev`
 
 To start the app in dev mode.\
@@ -17,7 +20,3 @@ For production mode
 ### `npm run test`
 
 Run the test cases.
-
-## Learn More
-
-To learn Fastify, check out the [Fastify documentation](https://www.fastify.io/docs/latest/).
