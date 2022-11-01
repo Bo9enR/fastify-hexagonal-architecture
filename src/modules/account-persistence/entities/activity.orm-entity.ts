@@ -1,7 +1,7 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model, models, Types } from 'mongoose';
 
 export interface ActivityOrmEntity {
-  _id?: string;
+  _id?: Types.ObjectId;
   timestamp: Date;
   ownerAccountId: string;
   sourceAccountId: string;

@@ -4,6 +4,7 @@ import { ActivityEntity } from '../../domains/entities/activity.entity';
 import { MoneyEntity } from '../../domains/entities/money.entity';
 import { AccountOrmEntity } from './entities/account.orm-entity';
 import { ActivityOrmEntity } from './entities/activity.orm-entity';
+import { Types as MongooseTypes } from 'mongoose';
 
 export class AccountMapper {
   static mapToDomain(
@@ -28,7 +29,7 @@ export class AccountMapper {
         activity.targetAccountId,
         new Date(activity.timestamp),
         MoneyEntity.of(activity.amount),
-        activity._id,
+        String(activity._id),
       );
 
       activityWindowEntity.addActivity(activityEntity);
@@ -45,8 +46,8 @@ export class AccountMapper {
       targetAccountId: activity.targetAccountId,
       amount: activity.money.amount.toNumber(),
     };
-    if (activity.id !== null) {
-      activityOrmEntity._id = activity.id;
+    if (activity.id) {
+      activityOrmEntity._id = new MongooseTypes.ObjectId(activity.id);
     }
     return activityOrmEntity;
   }

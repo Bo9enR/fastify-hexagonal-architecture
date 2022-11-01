@@ -1,7 +1,7 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model, models, Types } from 'mongoose';
 
 export interface AccountOrmEntity {
-  _id?: string;
+  _id?: Types.ObjectId;
   userId: string;
 }
 
